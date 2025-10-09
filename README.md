@@ -15,6 +15,6 @@ It lets you **edit**, **build**, **debug**, **run**, and **list** projects quick
 ## ⚙️ Requirements
 
 - **Bash** (v4 or higher)
-- **Clang / Clang++** installed in `bin/`
-- **Nano** and **Touch** also available in `bin/`
+- **Clang / Clang++** installed in `PATH`
+- **Nano** and **Touch** also available in `PATH`
 - Directory structure:
