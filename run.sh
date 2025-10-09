@@ -12,9 +12,9 @@ whendone() {
 }
 while true; do
     clear
-    printf "Welcome\n1. Edit <project-name>\n2. Debug <project-name>\n3. Build <project-name>\n4. Run <project-name>\n5. List [search]\n6. Exit\n"
+    printf "Welcome\n1. Edit <project-name>\n2. Debug <project-name>\n3. Build <project-name>\n4. Run <project-name>\n5. List [search]\n6. Remove <project-name>\n7. Exit\n"
     read -p ": " opt name extracheck
-    if [[ ! "$opt" =~ (exit|Exit|6|5|list|List) ]]; then
+    if [[ ! "$opt" =~ (exit|Exit|7|5|list|List) ]]; then
         if [ -z "$opt" ] || [ -z "$name" ]; then
     	    printf "%b" "\n\n\n\n\n\n\n\n\n\n\n${BRIGHT_RED}You must enter both an option and a name.${RESETCOL}"
             continue
@@ -90,7 +90,21 @@ fi
 	    ls "$DIR/src"
 	    whendone
 	    ;;
-	exit|6|Exit)
+	delete|Delete|remove|Remove|6)
+            for type in src compiled; do
+    		file="$DIR/$type/$name"
+    		if [[ -f "$file" ]]; then
+        	    read -p "Do you want to delete the $type file for $name? (y/N): " ans
+        	    if [[ "$ans" =~ ^(y|Y|yes|Yes|YES)$ ]]; then
+            		rm -f "$file"
+            		echo "$type deleted."
+        	    else
+            		echo "Skipping $type."
+        	    fi
+    		fi
+	    done
+	    ;;
+	exit|7|Exit)
 	    exit 0
 	    ;;
 	*)
