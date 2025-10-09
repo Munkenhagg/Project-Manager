@@ -1,10 +1,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-C="$DIR/bin/clang"
-CPP="$DIR/bin/clang++"
-NANO="$DIR/bin/nano"
 BRIGHT_RED='\033[91m'
 RESETCOL='\033[0m'
-TOUCH="$DIR/bin/touch"
 whendone() {
     printf "\n"
     read -p "Enter continue when ready: " con
