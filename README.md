@@ -17,4 +17,13 @@ It lets you **edit**, **build**, **debug**, **run**, **delete**, and **list** pr
 - **Bash** (v4 or higher)
 - **Clang / Clang++** installed in `PATH`
 - **Nano** and **Touch** also available in `PATH`
-- Directory structure:
+
+## 📂 Directory Structure
+
+- **`src/`** — Editable source files  
+- **`compiled/`** — Compiled project binaries  
+- **`tmp/`** — Temporary files created during build/debug  
+- **`run.sh`** — Main script
+- **`install.sh` - Installation script
+
+*All directories are created by the install.sh if they do not exist.*
