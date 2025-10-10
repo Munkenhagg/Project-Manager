@@ -10,10 +10,18 @@ whendone() {
 	whendone
     fi
 }
+whichcompiler() {
+    ext="${name##*.}"
+    case "$ext" in
+        c|s|asm) compiler="clang" ;;
+        cpp|cxx|cc|c++) compiler="clang++" ;;
+        *) compiler="" ;;
+    esac
+}
 while true; do
     clear
-    printf "Welcome\n1. Edit <project-name>\n2. Debug <project-name>\n3. Build <project-name>\n4. Run <project-name>\n5. List [search]\n6. Remove <project-name>\n7. Exit\n"
-    read -p ": " opt name extracheck
+    printf "Welcome\n1. Edit <project-name>\n2. Debug <project-name>\n3. Build <project-name>\n4. Run <project-name>\n5. List [search]\n6. Remove <project-name> <src|compiled>\n7. Exit\n"
+    read -p ": " opt name removedir extracheck
     if [[ ! "$opt" =~ (exit|Exit|7|5|list|List) ]]; then
         if [ -z "$opt" ] || [ -z "$name" ]; then
     	    printf "%b" "\n\n\n\n\n\n\n\n\n\n\n${BRIGHT_RED}You must enter both an option and a name.${RESETCOL}"
@@ -33,11 +41,7 @@ fi
 	    ;;
 	debug|2|Debug)
 	    ext="${name##*.}"
-	    case "$ext" in
-    		c|s|asm) compiler="clang" ;;
-    		cpp|cxx|cc|c++) compiler="clang++" ;;
-    		*) compiler="" ;;
-	    esac
+	    whichcompiler
 	    if [ -f "$DIR/src/$name" ]; then
 		if [ -z "$compiler" ]; then
 		    printf "%b" "${BRIGHT_RED}Not a known extension!\nOnly C and C++ can be debugged!${RESETCOL}"
@@ -51,12 +55,8 @@ fi
 	    whendone
 	    ;;
 	build|3|Build)
-	                ext="${name##*.}"
-            case "$ext" in
-                c|s|asm) compiler="clang" ;;
-                cpp|cxx|cc|c++) compiler="clang++" ;;
-                *) compiler="" ;;
-            esac
+	    ext="${name##*.}"
+            whichcompiler
 	    build_name="${name%.*}"
             if [ -f "$DIR/src/$name" ]; then
                 if [ -z "$compiler" ]; then
@@ -84,25 +84,32 @@ fi
 	    sleep 3.5
 	    ;;
 	list|5|List)
-	    echo "Compiled: "
-	    ls "$DIR/compiled"
-	    echo "Uncompiled: "
-	    ls "$DIR/src"
+	    printf "\nCompiled:\n\n"
+	    ls "$DIR/compiled" | grep "$name"
+	    printf "\nUncompiled:\n\n"
+	    ls "$DIR/src" | grep "$name"
 	    whendone
 	    ;;
 	delete|Delete|remove|Remove|6)
-            for type in src compiled; do
-    		file="$DIR/$type/$name"
-    		if [[ -f "$file" ]]; then
-        	    read -p "Do you want to delete the $type file for $name? (y/N): " ans
-        	    if [[ "$ans" =~ ^(y|Y|yes|Yes|YES)$ ]]; then
-            		rm -f "$file"
-            		echo "$type deleted."
-        	    else
-            		echo "Skipping $type."
-        	    fi
-    		fi
-	    done
+            build_name="${name%.*}"
+            if [ -z "$removedir" ]; then
+                printf "%b" "${BRIGHT_RED}Error: ${RESETCOL}Must specify source or compiled project.\n"
+                sleep 3.5
+                continue
+            fi
+            case "$removedir" in
+                src|SRC|SOURCE|Source)
+                    rm -i "$DIR/src/$name"
+                    ;;
+                com|compiled|COMPILED|Compiled)
+                    rm -i "$DIR/compiled/$build_name"
+		    ;;
+                *)
+                    printf "%b" "${BRIGHT_RED}Error: ${RESETCOL}Must specify source or compiled project.\n"
+		    sleep 3.5
+                    continue
+		    ;;
+	    esac
 	    ;;
 	exit|7|Exit)
 	    exit 0

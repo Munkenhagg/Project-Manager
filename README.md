@@ -1,7 +1,7 @@
 # Bash Project Manager
 
 A lightweight, terminal-based C/C++ project manager built in pure Bash.  
-It lets you **edit**, **build**, **debug**, **run**, and **list** projects quickly from one menu — no IDE required.
+It lets you **edit**, **build**, **debug**, **run**, **delete**, and **list** projects quickly from one menu — no IDE required.
 
 ## 📦 Features
 
