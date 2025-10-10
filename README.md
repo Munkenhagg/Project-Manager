@@ -24,6 +24,6 @@ It lets you **edit**, **build**, **debug**, **run**, **delete**, and **list** pr
 - **`compiled/`** — Compiled project binaries  
 - **`tmp/`** — Temporary files created during build/debug  
 - **`run.sh`** — Main script
-- **`install.sh` - Installation script
+- **`install.sh`** - Installation script
 
 *All directories are created by the install.sh if they do not exist.*
